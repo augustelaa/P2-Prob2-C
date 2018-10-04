@@ -57,13 +57,13 @@ public class ContaCorrente {
         Operacao oper = new Operacao(valor,this.getSaldo(),TipoOperacao.SAIDA,new Date(),this);
         operacoes.add(oper);
         this.saldo -= valor;
-        executaServicos();
+        executaServicos("Cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+", Saque de " + valor);
     }
     
-    private void executaServicos() {
+    private void executaServicos(String mensagem) {
     	for (Servico servico : servicos) {
     		for (TipoCanal canal: canais) {
-    			servico.disparar(canal);
+    			servico.disparar(canal, mensagem);
     		}
         }
     }
@@ -72,7 +72,7 @@ public class ContaCorrente {
         Operacao oper = new Operacao(valor,this.getSaldo(),TipoOperacao.ENTRADA,new Date(),this);
         operacoes.add(oper);
         this.saldo += valor;
-        executaServicos();
+        executaServicos("Cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+", Deposito de " + valor);
     }    
     
     public void transferir(double valor, ContaCorrente destino){
@@ -83,14 +83,18 @@ public class ContaCorrente {
         Operacao oper = new OperacaoTransferencia(valor,this.getSaldo(),TipoOperacao.SAIDA,new Date(),this,destino);
         operacoes.add(oper);
         this.saldo -= valor;
-        executaServicos();
+        executaServicos("Cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+
+        		" para cliente "+destino.getCliente().getNome()+", Conta "+destino.getNumero()+ "-" +destino.getAgencia()+        		
+        		", Transferencia de " + valor);
     }   
     
     private void receberTransferencia(double valor, ContaCorrente origem){    
         Operacao oper = new OperacaoTransferencia(valor,this.getSaldo(),TipoOperacao.ENTRADA,new Date(),this,origem);
         operacoes.add(oper);
         this.saldo += valor;
-        executaServicos();
+        executaServicos("Cliente "+origem.getCliente().getNome()+", Conta "+origem.getNumero()+ "-" +origem.getAgencia()+
+        		" para cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+        		
+        		", Recebimento da transferencia de " + valor);
     }
     
     public int getNumero() {
