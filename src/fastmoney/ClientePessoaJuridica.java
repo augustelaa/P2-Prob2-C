@@ -1,5 +1,9 @@
 package fastmoney;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import core.TipoCanal;
 
 /**
  *
@@ -29,6 +33,15 @@ public class ClientePessoaJuridica extends Cliente{
 
     public void setServidorJMS(String servidorJMS) {
         this.servidorJMS = servidorJMS;
+    }
+    
+    @Override
+    public List<TipoCanal> getTiposDisponiveis() {
+    	List<TipoCanal> retorno = new ArrayList<TipoCanal>();
+    	retorno.add(TipoCanal.SMS);
+    	retorno.add(TipoCanal.WHATSAPP);
+    	retorno.add(TipoCanal.JMS);
+    	return retorno;
     }
     
 }

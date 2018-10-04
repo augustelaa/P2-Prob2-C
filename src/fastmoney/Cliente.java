@@ -1,10 +1,15 @@
 package fastmoney;
 
+import java.util.ArrayList;
+
 /*
  * Esta classe oferece as funcionalidades básicas para atender ao Problema 2.
  */
 
 import java.util.HashMap;
+import java.util.List;
+
+import core.TipoCanal;
 
 
 /**
@@ -59,6 +64,11 @@ public abstract class Cliente {
         this.telFixo = telFixo;
     }
     
-    
+    public List<TipoCanal> getTiposDisponiveis() {
+    	List<TipoCanal> retorno = new ArrayList<TipoCanal>();
+    	retorno.add(TipoCanal.SMS);
+    	retorno.add(TipoCanal.WHATSAPP);
+    	return retorno;
+    }
     
 }

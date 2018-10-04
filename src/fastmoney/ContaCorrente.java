@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import core.Servico;
+import core.TipoCanal;
+
 /*
  * Esta classe oferece as funcionalidades bÃ¡sicas para atender ao Problema 2.
  */
@@ -18,15 +21,33 @@ public class ContaCorrente {
     private int agencia;
     private Cliente cliente;
     private double saldo = 0;
-    private List<Operacao> operacoes = new ArrayList();
+    private List<Operacao> operacoes = new ArrayList<Operacao>();
+    private List<Servico> servicos;
+    private List<TipoCanal> canais;
 
     public ContaCorrente(int numero, int agencia) {
         this.setNumero(numero);
         this.setAgencia(agencia);
+        this.servicos = new ArrayList<Servico>();
+        this.canais = new ArrayList<TipoCanal>();
     }
 
     public String getChave(){
         return String.valueOf(agencia)+"-"+String.valueOf(numero);
+    }
+    
+    public void addServico(Servico ss) {
+    	if (canais.isEmpty()) {
+    		throw new IllegalArgumentException("Nenhum canal foi definido para os serviços.");
+    	}
+    	servicos.add(ss);
+    }
+    
+    public void addCanal(TipoCanal canal) {
+    	if (!getCliente().getTiposDisponiveis().contains(canal)) {
+    		throw new IllegalArgumentException("Canal não disponível para o cliente.");
+    	}
+    	canais.add(canal);
     }
     
     public void sacar(double valor){
@@ -36,12 +57,22 @@ public class ContaCorrente {
         Operacao oper = new Operacao(valor,this.getSaldo(),TipoOperacao.SAIDA,new Date(),this);
         operacoes.add(oper);
         this.saldo -= valor;
+        executaServicos();
+    }
+    
+    private void executaServicos() {
+    	for (Servico servico : servicos) {
+    		for (TipoCanal canal: canais) {
+    			servico.disparar(canal);
+    		}
+        }
     }
     
     public void depositar(double valor){
         Operacao oper = new Operacao(valor,this.getSaldo(),TipoOperacao.ENTRADA,new Date(),this);
         operacoes.add(oper);
         this.saldo += valor;
+        executaServicos();
     }    
     
     public void transferir(double valor, ContaCorrente destino){
@@ -52,12 +83,14 @@ public class ContaCorrente {
         Operacao oper = new OperacaoTransferencia(valor,this.getSaldo(),TipoOperacao.SAIDA,new Date(),this,destino);
         operacoes.add(oper);
         this.saldo -= valor;
+        executaServicos();
     }   
     
     private void receberTransferencia(double valor, ContaCorrente origem){    
         Operacao oper = new OperacaoTransferencia(valor,this.getSaldo(),TipoOperacao.ENTRADA,new Date(),this,origem);
         operacoes.add(oper);
-        this.saldo += valor;        
+        this.saldo += valor;
+        executaServicos();
     }
     
     public int getNumero() {

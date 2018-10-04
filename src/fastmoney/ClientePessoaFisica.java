@@ -1,7 +1,5 @@
 package fastmoney;
 
-
-
 /**
  *
  * @author marcel
@@ -21,7 +19,5 @@ public class ClientePessoaFisica extends Cliente{
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    
-    
     
 }
