@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import core.Servico;
-import core.TipoCanal;
+import core.canal.Canal;
+import core.servico.Servico;
 
 /*
  * Esta classe oferece as funcionalidades bÃ¡sicas para atender ao Problema 2.
@@ -23,13 +23,13 @@ public class ContaCorrente {
     private double saldo = 0;
     private List<Operacao> operacoes = new ArrayList<Operacao>();
     private List<Servico> servicos;
-    private List<TipoCanal> canais;
+    private List<Canal> canais;
 
     public ContaCorrente(int numero, int agencia) {
         this.setNumero(numero);
         this.setAgencia(agencia);
         this.servicos = new ArrayList<Servico>();
-        this.canais = new ArrayList<TipoCanal>();
+        this.canais = new ArrayList<Canal>();
     }
 
     public String getChave(){
@@ -43,8 +43,8 @@ public class ContaCorrente {
     	servicos.add(ss);
     }
     
-    public void addCanal(TipoCanal canal) {
-    	if (!getCliente().getTiposDisponiveis().contains(canal)) {
+    public void addCanal(Canal canal) {
+    	if (!getCliente().getTiposDisponiveis().contains(canal.getTipo())) {
     		throw new IllegalArgumentException("Canal não disponível para o cliente.");
     	}
     	canais.add(canal);
@@ -62,7 +62,7 @@ public class ContaCorrente {
     
     private void executaServicos(String mensagem) {
     	for (Servico servico : servicos) {
-    		for (TipoCanal canal: canais) {
+    		for (Canal canal: canais) {
     			servico.disparar(canal, mensagem);
     		}
         }
