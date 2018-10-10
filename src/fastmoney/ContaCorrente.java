@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import core.TipoServico;
 import core.canal.Canal;
 import core.servico.Servico;
-import core.servico.ServicoNotificacao;
 
 /*
  * Esta classe oferece as funcionalidades bÃ¡sicas para atender ao Problema 2.
@@ -38,7 +38,7 @@ public class ContaCorrente {
     }
     
     public void addServico(Servico ss) {
-    	if (canais.isEmpty() && ss instanceof ServicoNotificacao) {
+    	if (canais.isEmpty() && ss.getTipo().equals(TipoServico.NOTIFICACAO)) {
     		throw new IllegalArgumentException("Nenhum canal foi definido para o serviço de notificação.");
     	}
     	servicos.add(ss);
@@ -96,7 +96,7 @@ public class ContaCorrente {
     
     public void transferir(double valor, ContaCorrente destino){
         if (valor > this.getSaldo()){
-            throw new IllegalArgumentException("Saldo insuficiente para transferÃªncia");
+            throw new IllegalArgumentException("Saldo insuficiente para transferência");
         }        
         destino.receberTransferencia(valor, this);
         Operacao oper = new OperacaoTransferencia(valor,this.getSaldo(),TipoOperacao.SAIDA,new Date(),this,destino);

@@ -1,7 +1,9 @@
 package core.servico;
 
+import core.TipoServico;
 import fastmoney.ContaCorrente;
 
 public interface Servico {
-	public void disparar(ContaCorrente conta);
+	TipoServico getTipo();
+	void disparar(ContaCorrente conta);
 }

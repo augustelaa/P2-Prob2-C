@@ -1,5 +1,6 @@
 package core.servico;
 
+import core.TipoServico;
 import core.canal.Canal;
 import fastmoney.ContaCorrente;
 import fastmoney.Operacao;
@@ -11,6 +12,11 @@ public class ServicoNotificacao implements Servico {
 		for (Canal canal : conta.getCanais()) {
 			canal.disparar(ultima.toString());
 		}
+	}
+
+	@Override
+	public TipoServico getTipo() {
+		return TipoServico.NOTIFICACAO;
 	}
 
 }
