@@ -22,7 +22,7 @@ public class OperacaoTransferencia extends Operacao{
  
     @Override
     public String toString(){
-        return "Conta "+this.getConta().getChave()+": OperaÃ§Ã£o de TransferÃªncia: "+this.getTipo()
+        return "Conta "+this.getConta().getChave()+": Operação de Transferencia: "+this.getTipo()
                 +" no valor de "+this.getValor()+" em "+df.format(this.getDataHora())
                 +" com a conta "+this.contraPartida.getChave();
     }    

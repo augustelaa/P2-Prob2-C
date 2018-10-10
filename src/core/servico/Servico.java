@@ -1,7 +1,7 @@
 package core.servico;
 
-import core.canal.Canal;
+import fastmoney.ContaCorrente;
 
 public interface Servico {
-	public void disparar(Canal canal, String mensagem);
+	public void disparar(ContaCorrente conta);
 }

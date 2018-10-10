@@ -5,6 +5,6 @@ package fastmoney;
  *
  * @author marcel
  */
-enum TipoOperacao {
+public enum TipoOperacao {
     SAIDA, ENTRADA;
 }

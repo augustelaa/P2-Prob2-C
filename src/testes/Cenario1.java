@@ -9,7 +9,7 @@ import core.canal.CanalWhatsApp;
 import core.servico.Servico;
 import core.servico.ServicoAnalise;
 import core.servico.ServicoBaixa;
-import core.servico.ServicoOperacao;
+import core.servico.ServicoNotificacao;
 import fastmoney.Cliente;
 import fastmoney.ClientePessoaFisica;
 import fastmoney.ClientePessoaJuridica;
@@ -24,7 +24,7 @@ public class Cenario1 {
 	@Test
 	public void test() {
 		
-		Servico servicoOperacao = new ServicoOperacao();
+		Servico servicoOperacao = new ServicoNotificacao();
 		Servico servicoAnalise = new ServicoAnalise();
 		Servico servicoBaixa = new ServicoBaixa();
 		
@@ -53,6 +53,7 @@ public class Cenario1 {
 		contaBB.addCanal(canalJMS);
 		contaBB.addCanal(canalWhatsApp);
 		contaBB.addServico(servicoBaixa);
+		contaBB.addServico(servicoOperacao);
 		
 		Cliente clienteC = new ClientePessoaFisica("Ronaldinho", "4798755768", "473335876", "4242534637");
 		ContaCorrente contaCA = new ContaCorrente(3, 2);

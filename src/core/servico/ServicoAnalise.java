@@ -1,12 +1,12 @@
 package core.servico;
 
-import core.canal.Canal;
+import fastmoney.ContaCorrente;
 
 public class ServicoAnalise implements Servico {
 
 	@Override
-	public void disparar(Canal canal, String mensagem) {
-		canal.disparar(mensagem);
+	public void disparar(ContaCorrente conta) {
+		System.out.println(conta.getUltimaOperacao().toString() + " - Serviço de análise");
 	}
 
 }

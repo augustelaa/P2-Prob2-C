@@ -7,6 +7,7 @@ import java.util.List;
 
 import core.canal.Canal;
 import core.servico.Servico;
+import core.servico.ServicoNotificacao;
 
 /*
  * Esta classe oferece as funcionalidades bÃ¡sicas para atender ao Problema 2.
@@ -37,10 +38,18 @@ public class ContaCorrente {
     }
     
     public void addServico(Servico ss) {
-    	if (canais.isEmpty()) {
-    		throw new IllegalArgumentException("Nenhum canal foi definido para os serviços.");
+    	if (canais.isEmpty() && ss instanceof ServicoNotificacao) {
+    		throw new IllegalArgumentException("Nenhum canal foi definido para o serviço de notificação.");
     	}
     	servicos.add(ss);
+    }
+    
+    public void removeServico(Servico ss) {
+    	if (servicos.contains(ss)) {
+    		servicos.remove(ss);
+    	} else {
+    		throw new IllegalArgumentException("Serviço não encontrado.");
+    	}
     }
     
     public void addCanal(Canal canal) {
@@ -50,6 +59,14 @@ public class ContaCorrente {
     	canais.add(canal);
     }
     
+    public void removeCanal(Canal canal) {
+    	if (canais.contains(canal)) {
+    		canais.remove(canal);
+    	} else {
+    		throw new IllegalArgumentException("Canal não encontrado.");
+    	}
+    }
+    
     public void sacar(double valor){
         if (valor > this.getSaldo()){
             throw new IllegalArgumentException("Saldo insuficiente para o saque");
@@ -57,14 +74,16 @@ public class ContaCorrente {
         Operacao oper = new Operacao(valor,this.getSaldo(),TipoOperacao.SAIDA,new Date(),this);
         operacoes.add(oper);
         this.saldo -= valor;
-        executaServicos("Cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+", Saque de " + valor);
+        executaServicos();
     }
     
-    private void executaServicos(String mensagem) {
+    public Operacao getUltimaOperacao() {
+    	return operacoes.get(operacoes.size()-1);
+    }
+    
+    private void executaServicos() {
     	for (Servico servico : servicos) {
-    		for (Canal canal: canais) {
-    			servico.disparar(canal, mensagem);
-    		}
+			servico.disparar(this);
         }
     }
     
@@ -72,7 +91,7 @@ public class ContaCorrente {
         Operacao oper = new Operacao(valor,this.getSaldo(),TipoOperacao.ENTRADA,new Date(),this);
         operacoes.add(oper);
         this.saldo += valor;
-        executaServicos("Cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+", Deposito de " + valor);
+        executaServicos();
     }    
     
     public void transferir(double valor, ContaCorrente destino){
@@ -83,18 +102,14 @@ public class ContaCorrente {
         Operacao oper = new OperacaoTransferencia(valor,this.getSaldo(),TipoOperacao.SAIDA,new Date(),this,destino);
         operacoes.add(oper);
         this.saldo -= valor;
-        executaServicos("Cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+
-        		" para cliente "+destino.getCliente().getNome()+", Conta "+destino.getNumero()+ "-" +destino.getAgencia()+        		
-        		", Transferencia de " + valor);
+        executaServicos();
     }   
     
     private void receberTransferencia(double valor, ContaCorrente origem){    
         Operacao oper = new OperacaoTransferencia(valor,this.getSaldo(),TipoOperacao.ENTRADA,new Date(),this,origem);
         operacoes.add(oper);
         this.saldo += valor;
-        executaServicos("Cliente "+origem.getCliente().getNome()+", Conta "+origem.getNumero()+ "-" +origem.getAgencia()+
-        		" para cliente "+getCliente().getNome()+", Conta "+getNumero()+ "-" +getAgencia()+        		
-        		", Recebimento da transferencia de " + valor);
+        executaServicos();
     }
     
     public int getNumero() {
@@ -125,7 +140,11 @@ public class ContaCorrente {
         return saldo;
     }
     
-    @Override
+    public List<Canal> getCanais() {
+		return canais;
+	}
+
+	@Override
     public String toString(){
         return this.getChave();
     }

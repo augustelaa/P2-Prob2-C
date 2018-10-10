@@ -49,7 +49,7 @@ public class Operacao {
     
     @Override
     public String toString(){
-        return "Conta "+this.getConta().getChave()+": OperaÃ§Ã£o de "+tipo+" no valor de "+valor+" em "+df.format(dataHora);
+        return "Conta "+this.getConta().getChave()+": Operação de "+tipo+" no valor de "+valor+" em "+df.format(dataHora);
     }
     
 }

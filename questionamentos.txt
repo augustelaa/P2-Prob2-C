@@ -1,0 +1,6 @@
+1) Fracamente acoplado, temos uma interface de Servico que generaliza o processo por meio de uma lista de Serviços na conta corrente.
+
+2) Sim, basta criar uma classe que implemente a interface de serviços e por meio do addServico na classe conta corrente atrelá-lo a ela.
+Não, não será necessário alterar nenhuma classe já existente, apenas criar novas classes com implementaçãom da interface de Servico.
+
+3) Por meio dos métodos addServico e removeServico na classe ContaCorrente.
