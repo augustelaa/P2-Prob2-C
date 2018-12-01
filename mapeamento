@@ -3,3 +3,9 @@ Padrão observer:
 	conta do cliente, é chamado a sua classe que faz a execução do seu serviço. Para o serviço de 'notificação das operações realizadas', foi 
 	necessário criar um Enum para os tipos de canais disponíveis para cada cliente. Quando o serviço de notificação é iniciado, invés de ser 
 	disparado a mensagem pela classe do serviço, é disparado na classe do canal que está adicionado na conta.
+
++-*+-*+-*+-*+-*+-*+-*+-*
+Observações do Professor:
+Parabéns!
+
+Nota (0-3):3,0
